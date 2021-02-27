@@ -1,9 +1,7 @@
 # hic-sunt-random
 Random Map Generator
-# hic-sunt-random
-Random Map Generator
 
-## How to install? ;33
+## How to install? ;3
 
 Install openCV library for python
 ```
