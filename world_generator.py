@@ -1,4 +1,4 @@
-import world_entities
+from world_entities import World
 
 def generate_world():
-    return World("Great Beet", 20, 20)
+    return World("Great Beet", 5, 5)
