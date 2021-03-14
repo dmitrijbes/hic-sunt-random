@@ -5,3 +5,7 @@ class World:
 
     def __str__(self):
         return f"World; name:{self.name} size_x:{self.size[0]} size_y:{self.size[1]}"
+
+    def __iter__(self):
+        # yield from self.world_entities
+        pass
