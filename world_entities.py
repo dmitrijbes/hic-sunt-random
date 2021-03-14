@@ -6,6 +6,7 @@ class World:
     def __str__(self):
         return f"World; name:{self.name} size_x:{self.size[0]} size_y:{self.size[1]}"
 
+<<<<<<< HEAD
 _new_world_matrix = [
     []
 ]
@@ -28,3 +29,8 @@ class Ocean(WorldObject):
 
 class Mountain(WorldObject):
     pass
+=======
+    def __iter__(self):
+        # yield from self.world_entities
+        pass
+>>>>>>> c8cd64e2764bd6d7b13226b003f5fe6fc007d14a

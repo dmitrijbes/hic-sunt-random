@@ -5,7 +5,7 @@ def main():
     print("Welcome to hic sunt random!")
 
     print("Starting to generate world..")
-    world = world_generator.generate_world()
+    world = world_generator.generate_world("Great Beet", 20, 20)
 
     print("Starting to render world..")
     world_renderer.render_world(world)
