@@ -5,11 +5,14 @@ class WorldObject:
 class Field(WorldObject):
     pass
 
+
 class Ocean(WorldObject):
     pass
 
+
 class Mountain(WorldObject):
     pass
+
 
 class World:
     def __init__(self, name, size_x, size_y):
@@ -24,4 +27,16 @@ class World:
             self.world_objects.append(world_objects_row)
 
     def __str__(self):
+        for world_objects_row in self.world_objects:
+            for world_object in world_objects_row:
+                if isinstance(world_object, Mountain):
+                    print("^", end="")
+                elif isinstance(world_object, Field):
+                    print("#", end="")
+                elif isinstance(world_object, Ocean):
+                    print("~", end="")
+                else:
+                    print("_", end="")
+            print("")
+
         return f"World; name:{self.name} size_x:{self.size[0]} size_y:{self.size[1]}"
