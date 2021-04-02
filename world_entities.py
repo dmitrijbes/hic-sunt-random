@@ -5,14 +5,11 @@ class WorldObject:
 class Field(WorldObject):
     pass
 
-
 class Ocean(WorldObject):
     pass
 
-
 class Mountain(WorldObject):
     pass
-
 
 class World:
     def __init__(self, name, size_x, size_y):
