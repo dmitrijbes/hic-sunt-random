@@ -6,13 +6,13 @@ def render_world(world):
     #for x in range(world.size[0]):
        # for y in range(world.size[1]):
            # print('b')
-    img1 = cv2.imread('ocean.png',cv2.IMREAD_COLOR)
-    img2 = cv2.imread('mountain.png',cv2.IMREAD_COLOR)
-    img3 = cv2.imread('field.png',cv2.IMREAD_COLOR)
+    img1 = cv2.imread('./resources/tiles/ocean.png',cv2.IMREAD_COLOR)
+    img2 = cv2.imread('./resources/tiles/mountain.png',cv2.IMREAD_COLOR)
+    img3 = cv2.imread('./resources/tiles/field.png',cv2.IMREAD_COLOR)
             
     vis = np.concatenate((img1, img2, img3), axis=1)
-    cv2.imwrite('out.png', vis)
-    cv2.imshow('out.png', vis)
+    cv2.imwrite('./output/out.png', vis)
+    cv2.imshow('./output/out.png', vis)
             
 
     k = cv2.waitKey()
