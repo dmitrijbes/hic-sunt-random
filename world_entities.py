@@ -19,9 +19,9 @@ class World:
         self.name = name
         self.size = (size_x, size_y)
         self.world_objects = []
-        for y in range(size_y):
+        for x in range(size_x):
             world_objects_row = []
-            for x in range(size_x):
+            for y in range(size_y):
                 world_objects_row.append(WorldObject(x,y))
 
             self.world_objects.append(world_objects_row)
