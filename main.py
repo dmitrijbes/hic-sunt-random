@@ -8,7 +8,7 @@ def main():
     world = world_generator.generate_world("Great Beet", 40, 40)
 
     print("Starting to render world..")
-    world_renderer.render_world(world)
+    # world_renderer.render_world(world)
 
     print("Hic sunt random work finished! Enjoy.")
 
