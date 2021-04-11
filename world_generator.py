@@ -104,19 +104,19 @@ def generate_world(name, size_x, size_y):
 
     generate_ocean(world)
 
-    land_seeds = 2
-    land_grow_rate = 8
+    land_seeds = 10
+    land_grow_rate = 20
     generate_land(world, land_seeds, land_grow_rate)
 
-    mountain_seeds = 1
-    mountain_grow_rate = 4
-    mountain_grow_size = 5
+    mountain_seeds = 3
+    mountain_grow_rate = 6
+    mountain_grow_size = 3
     generate_mountains(world, mountain_seeds, mountain_grow_rate, mountain_grow_size)
 
     generate_lake()
     generate_river()
     generate_forest()
 
-    print(world)
+    # print(world)
 
     return world

@@ -5,12 +5,12 @@ def main():
     print("Welcome to hic sunt random!")
 
     print("Starting to generate world..")
-    world = world_generator.generate_world("Great Beet", 40, 40)
+    world = world_generator.generate_world("Great Beet", 100, 100)
 
     print("Starting to render world..")
-    # world_renderer.render_world(world)
+    world_renderer.render_world(world)
 
-    print("Hic sunt random work finished! Enjoy.")
+    print("Hic sunt random work finshed! Enjoy.")
 
 if __name__ == '__main__':
     main()
