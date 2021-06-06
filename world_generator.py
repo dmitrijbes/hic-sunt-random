@@ -117,8 +117,43 @@ def generate_mountains(world, mountain_seeds, mountain_grow_rate, mountain_grow_
 def generate_lake():
     pass
 
-def generate_river():
-    pass
+def get_river_grow_directions(river_grow_size, world, x, y):
+    river_directions = [(0, 1), (0, -1), (-1, -1)]
+    # river_directions = [(0, 1), (0, -1), (-1, -1), (-1, 1), (1, 1), (1, -1)]
+    river_grow_directions = []
+    for direction_x, direction_y in river_directions:
+        river_grow_x = x + direction_x
+        river_grow_y = y + direction_y
+        if is_inside_world(world, river_grow_x, river_grow_y) and (isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Field) or isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Mountain)) and get_neighbours_count(world, world_entities.River, river_grow_x, river_grow_y) < river_grow_size:
+            river_grow_directions.append((direction_x, direction_y))
+
+    return river_grow_directions
+
+
+def generate_river(world, river_seeds, river_grow_rate, river_grow_size):
+    for i in range(river_seeds):
+        world_size_x, world_size_y = world.size
+        riv_random_pos_x = random.randint(1, world_size_x - 2)
+        riv_random_pos_y = random.randint(1, world_size_y - 2)
+        while isinstance(world.world_objects[riv_random_pos_x][riv_random_pos_y], world_entities.Ocean):
+            riv_random_pos_x = random.randint(1, world_size_x - 2)
+            riv_random_pos_y = random.randint(1, world_size_y - 2)
+        world.world_objects[riv_random_pos_x][riv_random_pos_y] = world_entities.River(riv_random_pos_x, riv_random_pos_y)
+
+    for i in range(river_grow_rate):
+        temp_world_objects = copy.deepcopy(world.world_objects)
+        for x, world_objects_row in enumerate(temp_world_objects):
+            for y, world_object in enumerate(world_objects_row):
+                if isinstance(world_object, world_entities.River):
+                    river_grow_directions = get_river_grow_directions(river_grow_size, world, x, y)
+                    if not river_grow_directions:
+                        continue
+
+                    riv_direction_index = random.randint(0, len(river_grow_directions) - 1)
+                    direction_x, direction_y = river_grow_directions[riv_direction_index]
+                    river_grow_x = x + direction_x
+                    river_grow_y = y + direction_y
+                    world.world_objects[river_grow_x][river_grow_y] = world_entities.River(river_grow_x, river_grow_y)
 
 def generate_forest():
     pass
@@ -137,10 +172,15 @@ def generate_world(name, size_x, size_y):
     mountain_grow_size = 3
     generate_mountains(world, mountain_seeds, mountain_grow_rate, mountain_grow_size)
 
-    generate_lake()
-    generate_river()
-    generate_forest()
+    river_seeds = 5
+    river_grow_rate = 10
+    river_grow_size = 2
+    generate_river(world, river_seeds, river_grow_rate, river_grow_size)
 
+
+
+    generate_forest()
+    generate_lake()
     # print(world)
 
     return world
