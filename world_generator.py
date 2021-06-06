@@ -42,13 +42,25 @@ def generate_land(world, land_seeds, land_grow_rate):
 
         world.world_objects[random_pos_x][random_pos_y] = world_entities.Field(random_pos_x, random_pos_y)
 
-    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0), (-1, -1), (-1, 1), (1, 1), (1, -1)]
+    characters = []
+    max_characters = 6
+    character_force = 2
+    for j in range(max_characters):
+        character_directions = []
+        for i in range(character_force):
+            random_direction = random.randint(0, len(directions) - 1)
+            character_directions.append(directions[random_direction])
+        characters.append(character_directions)
+
     for i in range(land_grow_rate):
         temp_world_objects = copy.deepcopy(world.world_objects)
         for x, world_objects_row in enumerate(temp_world_objects):
             for y, world_object in enumerate(world_objects_row):
                 if isinstance(world_object, world_entities.Field):
-                    for direction_x, direction_y in directions:
+                    rand_character = random.randint(0, len(characters) - 1)
+
+                    for direction_x, direction_y in characters[rand_character]:
                         land_grow_x = x + direction_x
                         land_grow_y = y + direction_y
                         if is_inside_world(world, land_grow_x, land_grow_y) and throw_coin():
@@ -105,7 +117,7 @@ def generate_world(name, size_x, size_y):
     generate_ocean(world)
 
     land_seeds = 10
-    land_grow_rate = 20
+    land_grow_rate = 30
     generate_land(world, land_seeds, land_grow_rate)
 
     mountain_seeds = 3
