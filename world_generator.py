@@ -114,11 +114,58 @@ def generate_mountains(world, mountain_seeds, mountain_grow_rate, mountain_grow_
                     mountain_grow_y = y + direction_y
                     world.world_objects[mountain_grow_x][mountain_grow_y] = world_entities.Mountain(mountain_grow_x, mountain_grow_y)
 
+# # def 555get_mountain_grow_directions(directions, world, x, y):
+#     grow_directions = []
+#     for direction_x, direction_y in directions:
+#         mountain_grow_x = x + direction_x
+#         mountain_grow_y = y + direction_y
+#         if is_inside_world(world, mountain_grow_x, mountain_grow_y) and isinstance(world.world_objects[mountain_grow_x][mountain_grow_y], world_entities.Field):
+#             grow_directions.append((direction_x, direction_y))
+
+#     return grow_directions
+
+# def 555generate_mountains(world, mountain_seeds, mountain_grow_rate, mountain_grow_size):
+#     for i in range(mountain_seeds):
+#         world_size_x, world_size_y = world.size
+#         random_pos_x = random.randint(1, world_size_x - 2)
+#         random_pos_y = random.randint(1, world_size_y - 2)
+#         while not isinstance(world.world_objects[random_pos_x][random_pos_y], world_entities.Field):
+#             random_pos_x = random.randint(1, world_size_x - 2)
+#             random_pos_y = random.randint(1, world_size_y - 2)
+#         world.world_objects[random_pos_x][random_pos_y] = world_entities.Mountain(random_pos_x, random_pos_y)
+
+#     directions = [(0, 1), (0, -1), (1, 0), (-1, 0), (-1, -1), (-1, 1), (1, 1), (1, -1)]
+#     characters = []
+#     max_characters = 3
+#     character_force = 2
+#     for j in range(max_characters):
+#         character_directions = []
+#         for i in range(character_force):
+#             random_direction = random.randint(0, len(directions) - 1)
+#             character_directions.append(directions[random_direction])
+#         characters.append(character_directions)
+
+#     for i in range(mountain_grow_rate):
+#         temp_world_objects = copy.deepcopy(world.world_objects)
+#         for x, world_objects_row in enumerate(temp_world_objects):
+#             for y, world_object in enumerate(world_objects_row):
+#                 if isinstance(world_object, world_entities.Mountain):
+#                     rand_character = random.randint(0, len(characters) - 1)
+#                     grow_directions = get_mountain_grow_directions(characters[rand_character], world, x, y)
+
+#                     if not grow_directions:
+#                         continue
+
+#                     direction_index = random.randint(0, len(grow_directions) - 1)
+#                     direction_x, direction_y = grow_directions[direction_index]
+#                     mountain_grow_x = x + direction_x
+#                     mountain_grow_y = y + direction_y
+#                     world.world_objects[mountain_grow_x][mountain_grow_y] = world_entities.Mountain(mountain_grow_x, mountain_grow_y)
 def generate_lake():
     pass
 
 def get_river_grow_directions(river_grow_size, world, x, y):
-    river_directions = [(0, 1), (0, -1), (-1, -1)]
+    river_directions = [(0, 1), (0, -1), (-1, -1), (1, 1)]
     # river_directions = [(0, 1), (0, -1), (-1, -1), (-1, 1), (1, 1), (1, -1)]
     river_grow_directions = []
     for direction_x, direction_y in river_directions:

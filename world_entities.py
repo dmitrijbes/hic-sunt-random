@@ -14,6 +14,9 @@ class Mountain(WorldObject):
 class River(WorldObject):
     pass
 
+# class CityofStars(WorldObject)
+    # pass
+
 class World:
     def __init__(self, name, size_x, size_y):
         self.name = name
