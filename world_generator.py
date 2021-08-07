@@ -165,14 +165,18 @@ def generate_lake():
     pass
 
 def get_river_grow_directions(river_grow_size, world, x, y):
-    river_directions = [(0, 1), (0, -1), (-1, -1), (1, 1)]
+    river_directions = [(1, -1), (0, 1), (1, 1), (-1, 0), (1, 0), (-1, -1), (0, -1), (-1, 1)]
     # river_directions = [(0, 1), (0, -1), (-1, -1), (-1, 1), (1, 1), (1, -1)]
     river_grow_directions = []
     for direction_x, direction_y in river_directions:
         river_grow_x = x + direction_x
         river_grow_y = y + direction_y
-        if is_inside_world(world, river_grow_x, river_grow_y) and (isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Field) or isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Mountain)) and get_neighbours_count(world, world_entities.River, river_grow_x, river_grow_y) < river_grow_size:
-            river_grow_directions.append((direction_x, direction_y))
+        if not river_grow_directions:
+            if is_inside_world(world, river_grow_x, river_grow_y) and (isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Field) or isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Mountain)) and get_neighbours_count(world, world_entities.River, river_grow_x, river_grow_y) < river_grow_size:
+               river_grow_directions.append((direction_x, direction_y))
+        else:
+            if is_inside_world(world, river_grow_x, river_grow_y) and (isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Field) or isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Mountain)) and get_neighbours_count(world, world_entities.River, river_grow_x, river_grow_y) < river_grow_size and (direction_x, direction_y) != river_grow_directions[-1]:
+                river_grow_directions.append((direction_x, direction_y))
 
     return river_grow_directions
 
@@ -196,7 +200,9 @@ def generate_river(world, river_seeds, river_grow_rate, river_grow_size):
                     if not river_grow_directions:
                         continue
 
+                    #random_values=[]
                     riv_direction_index = random.randint(0, len(river_grow_directions) - 1)
+                    #random_values.append(riv_direction_index)
                     direction_x, direction_y = river_grow_directions[riv_direction_index]
                     river_grow_x = x + direction_x
                     river_grow_y = y + direction_y
