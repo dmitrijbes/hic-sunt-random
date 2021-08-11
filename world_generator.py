@@ -11,7 +11,7 @@ def generate_ocean(world):
 def generate_land(world, land_seeds, land_grow_rate):
     world_growth.plant_seeds(world, world_entities.Field, land_seeds, world_entities.Ocean)
 
-    characters = world_growth.create_characters(6, 2)
+    characters = world_growth.create_characters(3, 2, directions=[(0, 1), (1,0), (1,1)])
 
     world_growth.grow_seeds(world, characters, world_entities.Field, world_entities.Ocean, land_grow_rate)
 
@@ -124,8 +124,8 @@ def generate_world(name, size_x, size_y):
 
     generate_ocean(world)
 
-    land_seeds = 10
-    land_grow_rate = 30
+    land_seeds = 6
+    land_grow_rate = 20
     generate_land(world, land_seeds, land_grow_rate)
 
     mountain_seeds = 3
