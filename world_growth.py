@@ -73,21 +73,19 @@ def plant_seeds(world, seed_type, seeds_amount, field_type):
         while not isinstance(world.world_objects[random_pos_x][random_pos_y], field_type) or (random_pos_x, random_pos_y) in planted_seeds:
             random_pos_x = random.randint(1, world_size_x - 2)
             random_pos_y = random.randint(1, world_size_y - 2)
-        world.world_objects[random_pos_x][random_pos_y] = seed_type(random_pos_x, random_pos_y)
+        world.set_cell(seed_type, random_pos_x, random_pos_y)
         planted_seeds.append((random_pos_x, random_pos_y))
 
 
 def grow_seeds(world, characters, seed_type, field_type, grow_rate):
     for i in range(grow_rate):
         temp_world_objects = copy.deepcopy(world.world_objects)
-        for x, world_objects_row in enumerate(temp_world_objects):
-            for y, world_object in enumerate(world_objects_row):
-                if isinstance(world_object, seed_type):
-                    rand_character = random.randint(0, len(characters) - 1)
-                    grow_directions = get_grow_directions(world, characters[rand_character].get_directions(), x, y, field_type)
-                    if not grow_directions:
-                        continue
+        for x, y in world.get_world_objects(field_type):
+            rand_character = random.randint(0, len(characters) - 1)
+            grow_directions = get_grow_directions(world, characters[rand_character].get_directions(), x, y, field_type)
+            if not grow_directions:
+                continue
 
-                    rand_direction_index = random.randint(0, len(grow_directions) - 1)
-                    grow_x, grow_y = grow_directions[rand_direction_index]
-                    world.world_objects[grow_x][grow_y] = seed_type(grow_x, grow_y)
+            rand_direction_index = random.randint(0, len(grow_directions) - 1)
+            grow_x, grow_y = grow_directions[rand_direction_index]
+            world.set_cell(seed_type, grow_x, grow_y)

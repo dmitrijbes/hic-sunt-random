@@ -14,14 +14,12 @@ class Mountain(WorldObject):
 class River(WorldObject):
     pass
 
-# class CityofStars(WorldObject)
-    # pass
-
 class World:
     def __init__(self, name, size_x, size_y):
         self.name = name
         self.size = (size_x, size_y)
         self.world_objects = []
+        self.world_type_objects = {}
         for x in range(size_x):
             world_objects_row = []
             for y in range(size_y):
@@ -43,3 +41,16 @@ class World:
             print("")
 
         return f"World; name:{self.name} size_x:{self.size[0]} size_y:{self.size[1]}"
+
+    def set_cell(self, cell_type, x, y):
+        if type(self.world_objects[x][y]) in self.world_type_objects:
+            self.world_type_objects[type(self.world_objects[x][y])].remove((x, y))
+        if not cell_type in self.world_type_objects:
+            self.world_type_objects[cell_type] = []
+        self.world_type_objects[cell_type].append((x, y))
+
+        self.world_objects[x][y] = cell_type(x, y)
+
+    def get_world_objects(self, type):
+        return self.world_type_objects[type]
+
