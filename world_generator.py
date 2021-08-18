@@ -72,24 +72,9 @@ def generate_mountains(world, mountain_seeds_amount, mountain_grow_rate):
 def generate_lake():
     pass
 
-def get_river_grow_directions(river_grow_size, world, x, y):
-    river_directions = [(1, -1), (0, 1), (1, 1), (-1, 0), (1, 0), (-1, -1), (0, -1), (-1, 1)]
-    # river_directions = [(0, 1), (0, -1), (-1, -1), (-1, 1), (1, 1), (1, -1)]
-    river_grow_directions = []
-    for direction_x, direction_y in river_directions:
-        river_grow_x = x + direction_x
-        river_grow_y = y + direction_y
-        if not river_grow_directions:
-            if world_growth.is_inside_world(world, river_grow_x, river_grow_y) and (isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Field) or isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Mountain)) and world_growth.get_neighbours_count(world, world_entities.River, river_grow_x, river_grow_y) < river_grow_size:
-               river_grow_directions.append((direction_x, direction_y))
-        else:
-            if world_growth.is_inside_world(world, river_grow_x, river_grow_y) and (isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Field) or isinstance(world.world_objects[river_grow_x][river_grow_y], world_entities.Mountain)) and world_growth.get_neighbours_count(world, world_entities.River, river_grow_x, river_grow_y) < river_grow_size and (direction_x, direction_y) != river_grow_directions[-1]:
-                river_grow_directions.append((direction_x, direction_y))
 
-    return river_grow_directions
-
-
-def generate_river(world, river_seeds, river_grow_rate, river_grow_size):
+def generate_river_by_elia(world, river_seeds):
+    elias_planted_seeds = []
     for i in range(river_seeds):
         world_size_x, world_size_y = world.size
         riv_random_pos_x = random.randint(1, world_size_x - 2)
@@ -98,23 +83,14 @@ def generate_river(world, river_seeds, river_grow_rate, river_grow_size):
             riv_random_pos_x = random.randint(1, world_size_x - 2)
             riv_random_pos_y = random.randint(1, world_size_y - 2)
         world.world_objects[riv_random_pos_x][riv_random_pos_y] = world_entities.River(riv_random_pos_x, riv_random_pos_y)
+        elias_planted_seeds.append((riv_random_pos_x, riv_random_pos_y))
 
-    for i in range(river_grow_rate):
-        temp_world_objects = copy.deepcopy(world.world_objects)
-        for x, world_objects_row in enumerate(temp_world_objects):
-            for y, world_object in enumerate(world_objects_row):
-                if isinstance(world_object, world_entities.River):
-                    river_grow_directions = get_river_grow_directions(river_grow_size, world, x, y)
-                    if not river_grow_directions:
-                        continue
+    for river_seed in elias_planted_seeds:
+        riv_seed_x, riv_seed_y = river_seed
+        river_directions = [(1, -1), (0, 1), (1, 1), (-1, 0), (1, 0), (-1, -1), (0, -1), (-1, 1)]
+        riv_random_direction = random.choice(river_directions)
+        world.world_objects[riv_seed_x + riv_random_direction[0]][riv_seed_y + riv_random_direction[1]] = world_entities.River(riv_seed_x + riv_random_direction[0], riv_seed_y + riv_random_direction[1])
 
-                    #random_values=[]
-                    riv_direction_index = random.randint(0, len(river_grow_directions) - 1)
-                    #random_values.append(riv_direction_index)
-                    direction_x, direction_y = river_grow_directions[riv_direction_index]
-                    river_grow_x = x + direction_x
-                    river_grow_y = y + direction_y
-                    world.world_objects[river_grow_x][river_grow_y] = world_entities.River(river_grow_x, river_grow_y)
 
 def generate_forest():
     pass
@@ -133,9 +109,7 @@ def generate_world(name, size_x, size_y):
     generate_mountains(world, mountain_seeds, mountain_grow_rate)
 
     river_seeds = 5
-    river_grow_rate = 10
-    river_grow_size = 2
-    generate_river(world, river_seeds, river_grow_rate, river_grow_size)
+    generate_river_by_elia(world, river_seeds)
 
     generate_forest()
     generate_lake()
