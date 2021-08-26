@@ -3,9 +3,9 @@ Random Map Generator
 
 ## How to install? ;3
 
-Install openCV library for python
+Install OpenCV library for Python:
 ```
 pip install opencv-python
 ```
 
-enjoy ^_^
+Enjoy! ^_^

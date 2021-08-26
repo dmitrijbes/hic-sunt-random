@@ -1,6 +1,7 @@
 import random
 import copy
 
+
 class Character():
     def __init__(self, directions):
         self.directions = directions
@@ -33,17 +34,18 @@ def is_inside_world(world, x, y):
     return True
 
 
-def get_neighbours_count(world, world_object, x, y):
-    neighbours_count = 0
+def get_neighbors_count(world, world_object, x, y):
+    neighbors_count = 0
 
-    directions = [(0, 1), (0, -1), (1, 0), (-1, 0), (-1, -1), (-1, 1), (1, 1), (1, -1)]
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0),
+                  (-1, -1), (-1, 1), (1, 1), (1, -1)]
     for direction_x, direction_y in directions:
-        neighbour_x = x + direction_x
-        neighbour_y = y + direction_y
-        if is_inside_world(world, neighbour_x, neighbour_y) and isinstance(world.world_objects[neighbour_x][neighbour_y], world_object):
-            neighbours_count += 1
+        neighbor_x = x + direction_x
+        neighbor_y = y + direction_y
+        if is_inside_world(world, neighbor_x, neighbor_y) and isinstance(world.world_objects[neighbor_x][neighbor_y], world_object):
+            neighbors_count += 1
 
-    return neighbours_count
+    return neighbors_count
 
 
 def throw_coin():
@@ -79,10 +81,10 @@ def plant_seeds(world, seed_type, seeds_amount, field_type):
 
 def grow_seeds(world, characters, seed_type, field_type, grow_rate):
     for i in range(grow_rate):
-        temp_world_objects = copy.deepcopy(world.world_objects)
-        for x, y in world.get_world_objects(field_type):
+        for x, y in world.get_world_objects(seed_type):
             rand_character = random.randint(0, len(characters) - 1)
-            grow_directions = get_grow_directions(world, characters[rand_character].get_directions(), x, y, field_type)
+            grow_directions = get_grow_directions(
+                world, characters[rand_character].get_directions(), x, y, field_type)
             if not grow_directions:
                 continue
 

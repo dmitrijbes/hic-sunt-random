@@ -1,6 +1,7 @@
 import world_generator
 import world_renderer as world_renderer
 
+
 def main():
     print("Welcome to hic sunt random!")
 
@@ -11,6 +12,7 @@ def main():
     world_renderer.render_world(world)
 
     print("Hic sunt random work finshed! Enjoy.")
+
 
 if __name__ == '__main__':
     main()

@@ -1,26 +1,35 @@
+import random
+
 import world_entities
 import world_growth
-import random
-import copy
+
 
 def generate_ocean(world):
     for x, world_objects_row in enumerate(world.world_objects):
         for y, world_object in enumerate(world_objects_row):
             world.set_cell(world_entities.Ocean, x, y)
 
+
 def generate_land(world, land_seeds, land_grow_rate):
-    world_growth.plant_seeds(world, world_entities.Field, land_seeds, world_entities.Ocean)
+    world_growth.plant_seeds(world, world_entities.Field,
+                             land_seeds, world_entities.Ocean)
 
     characters = world_growth.create_characters(5, 2)
 
-    world_growth.grow_seeds(world, characters, world_entities.Field, world_entities.Ocean, land_grow_rate)
+    world_growth.grow_seeds(
+        world, characters, world_entities.Field, world_entities.Ocean, land_grow_rate)
+
 
 def generate_mountains(world, mountain_seeds_amount, mountain_grow_rate):
-    world_growth.plant_seeds(world, world_entities.Mountain, mountain_seeds_amount, world_entities.Field)
+    world_growth.plant_seeds(
+        world, world_entities.Mountain, mountain_seeds_amount, world_entities.Field)
 
-    characters = world_growth.create_characters(5, 2, directions=[(-1, 0), (0,1), (-1,1), (1, -1)])
+    characters = world_growth.create_characters(
+        5, 2, directions=[(-1, 0), (0, 1), (-1, 1), (1, -1)])
 
-    world_growth.grow_seeds(world, characters, world_entities.Mountain, world_entities.Field, mountain_grow_rate)
+    world_growth.grow_seeds(world, characters, world_entities.Mountain,
+                            world_entities.Field, mountain_grow_rate)
+
 
 # # def 555get_mountain_grow_directions(directions, world, x, y):
 #     grow_directions = []
@@ -80,14 +89,17 @@ def generate_river_by_elia(world, river_seeds):
         while isinstance(world.world_objects[riv_random_pos_x][riv_random_pos_y], world_entities.Ocean):
             riv_random_pos_x = random.randint(1, world_size_x - 2)
             riv_random_pos_y = random.randint(1, world_size_y - 2)
-        world.world_objects[riv_random_pos_x][riv_random_pos_y] = world_entities.River(riv_random_pos_x, riv_random_pos_y)
+        world.world_objects[riv_random_pos_x][riv_random_pos_y] = world_entities.River(
+            riv_random_pos_x, riv_random_pos_y)
         elias_planted_seeds.append((riv_random_pos_x, riv_random_pos_y))
 
     for river_seed in elias_planted_seeds:
         riv_seed_x, riv_seed_y = river_seed
-        river_directions = [(1, -1), (0, 1), (1, 1), (-1, 0), (1, 0), (-1, -1), (0, -1), (-1, 1)]
+        river_directions = [(1, -1), (0, 1), (1, 1), (-1, 0),
+                            (1, 0), (-1, -1), (0, -1), (-1, 1)]
         riv_random_direction = random.choice(river_directions)
-        world.world_objects[riv_seed_x + riv_random_direction[0]][riv_seed_y + riv_random_direction[1]] = world_entities.River(riv_seed_x + riv_random_direction[0], riv_seed_y + riv_random_direction[1])
+        world.world_objects[riv_seed_x + riv_random_direction[0]][riv_seed_y + riv_random_direction[1]
+                                                                  ] = world_entities.River(riv_seed_x + riv_random_direction[0], riv_seed_y + riv_random_direction[1])
 
 
 def generate_world(name, size_x, size_y):
