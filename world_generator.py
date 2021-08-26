@@ -5,9 +5,10 @@ import world_growth
 
 
 def generate_ocean(world):
-    for x, world_objects_row in enumerate(world.world_objects):
-        for y, world_object in enumerate(world_objects_row):
-            world.set_cell(world_entities.Ocean, x, y)
+    world_x, world_y = world.size
+    for cell_x in range(world_x):
+        for cell_y in range(world_y):
+            world.set_cell(world_entities.Ocean, cell_x, cell_y)
 
 
 def generate_land(world, land_seeds, land_grow_rate):
