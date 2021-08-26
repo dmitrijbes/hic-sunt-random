@@ -1,4 +1,5 @@
 import copy
+import os.path
 
 import numpy as np
 import cv2
@@ -38,4 +39,17 @@ def render_world(world):
         world_picture = np.concatenate(
             (world_picture, world_picture_row), axis=0)
 
-    cv2.imwrite('./output/out.png', world_picture)
+    folder_path = "./output/"
+    file_name = "out0"
+    file_format = ".png"
+
+    for i in range(60):
+        file_path = folder_path + file_name + file_format
+        print(file_path)
+        if os.path.exists(file_path):
+            file_name = file_name[:-1] + str(i)
+            print(file_name)
+        else:
+            break
+
+    cv2.imwrite(folder_path + file_name + file_format, world_picture)
