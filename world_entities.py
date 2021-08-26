@@ -62,3 +62,20 @@ class World:
 
     def get_world_objects(self, object_type):
         return copy.copy(self.world_type_objects[object_type])
+
+
+class MountainSettings:
+    seeds_amount = 2
+    growth_rate = 2
+
+
+class LandSettings:
+    seeds_amount = 2
+    growth_rate = 2
+
+
+class WorldSettings:
+    name = 'Great Beet World'
+    size = (100, 100)
+    mountain_settings = MountainSettings()
+    land_settings = LandSettings()

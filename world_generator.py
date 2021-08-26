@@ -11,25 +11,25 @@ def generate_ocean(world):
             world.set_cell(world_entities.Ocean, cell_x, cell_y)
 
 
-def generate_land(world, land_seeds, land_grow_rate):
+def generate_land(world, land_settings):
     world_growth.plant_seeds(world, world_entities.Field,
-                             land_seeds, world_entities.Ocean)
+                             land_settings.seeds_amount, world_entities.Ocean)
 
     characters = world_growth.create_characters(5, 2)
 
     world_growth.grow_seeds(
-        world, characters, world_entities.Field, world_entities.Ocean, land_grow_rate)
+        world, characters, world_entities.Field, world_entities.Ocean, land_settings.growth_rate)
 
 
-def generate_mountains(world, mountain_seeds_amount, mountain_grow_rate):
+def generate_mountains(world, mountain_settings):
     world_growth.plant_seeds(
-        world, world_entities.Mountain, mountain_seeds_amount, world_entities.Field)
+        world, world_entities.Mountain, mountain_settings.seeds_amount, world_entities.Field)
 
     characters = world_growth.create_characters(
         5, 2, directions=[(-1, 0), (0, 1), (-1, 1), (1, -1)])
 
     world_growth.grow_seeds(world, characters, world_entities.Mountain,
-                            world_entities.Field, mountain_grow_rate)
+                            world_entities.Field, mountain_settings.growth_rate)
 
 
 # # def 555get_mountain_grow_directions(directions, world, x, y):
@@ -103,18 +103,13 @@ def generate_river_by_elia(world, river_seeds):
                                                                   ] = world_entities.River(riv_seed_x + riv_random_direction[0], riv_seed_y + riv_random_direction[1])
 
 
-def generate_world(name, size_x, size_y):
-    world = world_entities.World(name, size_x, size_y)
+def generate_world(world_settings):
+    world = world_entities.World(
+        world_settings.name, world_settings.size[0], world_settings.size[1])
 
     generate_ocean(world)
-
-    land_seeds = 6
-    land_grow_rate = 20
-    generate_land(world, land_seeds, land_grow_rate)
-
-    mountain_seeds = 6
-    mountain_grow_rate = 5
-    generate_mountains(world, mountain_seeds, mountain_grow_rate)
+    generate_land(world, world_settings.land_settings)
+    generate_mountains(world, world_settings.mountain_settings)
 
     river_seeds = 5
     generate_river_by_elia(world, river_seeds)
