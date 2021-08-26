@@ -83,6 +83,7 @@ def generate_mountains(world, mountain_seeds_amount, mountain_grow_rate):
 
 def generate_river_by_elia(world, river_seeds):
     elias_planted_seeds = []
+
     for i in range(river_seeds):
         world_size_x, world_size_y = world.size
         riv_random_pos_x = random.randint(1, world_size_x - 2)
@@ -90,17 +91,30 @@ def generate_river_by_elia(world, river_seeds):
         while isinstance(world.world_objects[riv_random_pos_x][riv_random_pos_y], world_entities.Ocean):
             riv_random_pos_x = random.randint(1, world_size_x - 2)
             riv_random_pos_y = random.randint(1, world_size_y - 2)
-        world.world_objects[riv_random_pos_x][riv_random_pos_y] = world_entities.River(
-            riv_random_pos_x, riv_random_pos_y)
+        world.set_cell(world_entities.River,
+                       riv_random_pos_x, riv_random_pos_y)
         elias_planted_seeds.append((riv_random_pos_x, riv_random_pos_y))
 
+    elias_rivers = []
+    river_directions = [(1, -1), (0, 1), (1, 1), (-1, 0),
+                        (1, 0), (-1, -1), (0, -1), (-1, 1)]
     for river_seed in elias_planted_seeds:
         riv_seed_x, riv_seed_y = river_seed
-        river_directions = [(1, -1), (0, 1), (1, 1), (-1, 0),
-                            (1, 0), (-1, -1), (0, -1), (-1, 1)]
         riv_random_direction = random.choice(river_directions)
-        world.world_objects[riv_seed_x + riv_random_direction[0]][riv_seed_y + riv_random_direction[1]
-                                                                  ] = world_entities.River(riv_seed_x + riv_random_direction[0], riv_seed_y + riv_random_direction[1])
+        world.set_cell(world_entities.River, riv_seed_x +
+                       riv_random_direction[0], riv_seed_y + riv_random_direction[1])
+        elias_rivers.append((riv_seed_x +
+                             riv_random_direction[0], riv_seed_y + riv_random_direction[1]))
+
+    for i in range(20):
+        for river in elias_rivers:
+            if world_growth.is_inside_world(world, river[0], river[1]) and not isinstance(world.world_objects[river[0]][river[1]], world_entities.Ocean):
+                riv_random_direction = random.choice(river_directions)
+                last_value = riv_random_direction
+                while riv_random_direction == last_value:
+                    riv_random_direction = random.choice(river_directions)
+                    world.set_cell(world_entities.River, river[0] +
+                                   riv_random_direction[0], river[1] + riv_random_direction[1])
 
 
 def generate_world(name, size_x, size_y):
