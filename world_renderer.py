@@ -40,16 +40,13 @@ def render_world(world):
             (world_picture, world_picture_row), axis=0)
 
     folder_path = "./output/"
-    file_name = "out0"
+    file_name = "output_"
     file_format = ".png"
 
-    for i in range(60):
-        file_path = folder_path + file_name + file_format
-        print(file_path)
-        if os.path.exists(file_path):
-            file_name = file_name[:-1] + str(i)
-            print(file_name)
-        else:
-            break
+    i = 0
+    file_path = folder_path + file_name + str(i) + file_format
+    while os.path.exists(file_path):
+        i += 1
+        file_path = folder_path + file_name + str(i) + file_format
 
-    cv2.imwrite(folder_path + file_name + file_format, world_picture)
+    cv2.imwrite(file_path, world_picture)

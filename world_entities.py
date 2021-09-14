@@ -61,6 +61,9 @@ class World:
         self.world_objects[x][y] = cell_type(x, y)
 
     def get_world_objects(self, object_type):
+        if not object_type in self.world_type_objects:
+            return []
+
         return copy.copy(self.world_type_objects[object_type])
 
 
