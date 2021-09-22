@@ -51,7 +51,8 @@ class World:
         return f"World; name:{self.name} size_x:{self.size[0]} size_y:{self.size[1]}"
 
     def set_cell(self, cell_type, x, y):
-        if type(self.world_objects[x][y]) in self.world_type_objects:
+        if type(self.world_objects[x][y]) in self.world_type_objects and (x, y) in self.world_type_objects[type(
+                self.world_objects[x][y])]:
             self.world_type_objects[type(
                 self.world_objects[x][y])].remove((x, y))
         if not cell_type in self.world_type_objects:
