@@ -98,23 +98,25 @@ def generate_river_by_elia(world, river_seeds):
     elias_rivers = []
     river_directions = [(1, -1), (0, 1), (1, 1), (-1, 0),
                         (1, 0), (-1, -1), (0, -1), (-1, 1)]
-    for river_seed in elias_planted_seeds:
-        riv_seed_x, riv_seed_y = river_seed
-        riv_random_direction = random.choice(river_directions)
-        world.set_cell(world_entities.River, riv_seed_x +
-                       riv_random_direction[0], riv_seed_y + riv_random_direction[1])
-        elias_rivers.append((riv_seed_x +
-                             riv_random_direction[0], riv_seed_y + riv_random_direction[1]))
 
-    for i in range(20):
-        for river in elias_rivers:
-            if world_growth.is_inside_world(world, river[0], river[1]) and not isinstance(world.world_objects[river[0]][river[1]], world_entities.Ocean):
-                riv_random_direction = random.choice(river_directions)
+    for i in range(70):
+        if i > 0:
+            elias_planted_seeds = elias_rivers
+            elias_rivers = []
+
+        print('ffff')
+        for river_seed in elias_planted_seeds:
+            print('hihi')
+            riv_random_direction = random.choice(river_directions)
+            if world_growth.is_inside_world(world, river_seed[0] +
+                                            riv_random_direction[0], river_seed[1] + riv_random_direction[1]) and not isinstance(world.world_objects[river_seed[0] + riv_random_direction[0]][river_seed[1] + riv_random_direction[1]], world_entities.Ocean):
                 last_value = riv_random_direction
                 while riv_random_direction == last_value:
                     riv_random_direction = random.choice(river_directions)
-                    world.set_cell(world_entities.River, river[0] +
-                                   riv_random_direction[0], river[1] + riv_random_direction[1])
+                    world.set_cell(world_entities.River, river_seed[0] +
+                                   riv_random_direction[0], river_seed[1] + riv_random_direction[1])
+            elias_rivers.append((river_seed[0] +
+                                riv_random_direction[0], river_seed[1] + riv_random_direction[1]))
 
 
 def generate_world(world_settings):
