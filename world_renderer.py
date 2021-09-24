@@ -1,36 +1,47 @@
 import copy
 import os.path
 import random
+from os import listdir
 
 import cv2
 import numpy as np
 
 import world_entities
 
-
 TILES_PATH = './resources/tiles/'
+TILES_FORMAT = '.png'
 
 
 class TilesInfo:
     def __init__(self):
-        self.tiles_info = {}
+        self.tile_img_count = {}
 
     def init_info(self):
+        self.tile_img_count.clear()
+
+        tile_files = [file for file in listdir(
+            TILES_PATH) if os.path.isfile(os.path.join(TILES_PATH, file))]
+
+        for tile_file in tile_files:
+            if '_' not in tile_file:
+                continue
+
+            tile_type = tile_file.split('_')[0]
+            if tile_type not in self.tile_img_count:
+                self.tile_img_count[tile_type] = 1
+            else:
+                self.tile_img_count[tile_type] += 1
 
 
 def get_world_object_img(world_object, tiles_info):
-    tiles = tiles_info.get_tiles_info()
+    tile_name = type(world_object).name
+    if tile_name not in tiles_info.tile_img_count:
+        tile_name = 'placeholder'
 
-    if isinstance(world_object, world_entities.Mountain):
-        return cv2.imread(TILES_PATH + 'mountain.png', cv2.IMREAD_COLOR)
-    elif isinstance(world_object, world_entities.Field):
-        return cv2.imread(TILES_PATH + 'field.png', cv2.IMREAD_COLOR)
-    elif isinstance(world_object, world_entities.Ocean):
-        return cv2.imread(TILES_PATH + 'ocean.png', cv2.IMREAD_COLOR)
-    elif isinstance(world_object, world_entities.River):
-        return cv2.imread(TILES_PATH + 'river.png', cv2.IMREAD_COLOR)
-    else:
-        return cv2.imread(TILES_PATH + 'placeholder.png', cv2.IMREAD_COLOR)
+    tile_img_index = random.randint(
+        0, tiles_info.tile_img_count[tile_name] - 1)
+
+    return cv2.imread(TILES_PATH + tile_name + '_' + str(tile_img_index) + TILES_FORMAT, cv2.IMREAD_COLOR)
 
 
 def render_world(world):

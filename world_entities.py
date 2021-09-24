@@ -2,24 +2,26 @@ import copy
 
 
 class WorldObject:
+    name = 'world_object'
+
     def __init__(self, coordinate_x, coordinate_y):
         self.position = (coordinate_x, coordinate_y)
 
 
 class Field(WorldObject):
-    pass
+    name = 'field'
 
 
 class Ocean(WorldObject):
-    pass
+    name = 'ocean'
 
 
 class Mountain(WorldObject):
-    pass
+    name = 'mountain'
 
 
 class River(WorldObject):
-    pass
+    name = 'river'
 
 
 class World:
