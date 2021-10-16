@@ -84,7 +84,7 @@ def generate_forests(world, forest_settings):
     world_growth.plant_seeds_among(world, world_entities.Forest,
                                    forest_settings.seeds_amount//3*1, world_entities.Field, world_entities.Field)
 
-    characters = world_growth.create_characters(5, 4)
+    characters = world_growth.create_characters(5, 6)
 
     world_growth.grow_seeds(
         world, characters, world_entities.Forest, world_entities.Field, forest_settings.growth_rate)
