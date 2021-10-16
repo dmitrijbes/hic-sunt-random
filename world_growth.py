@@ -143,7 +143,7 @@ def plant_seeds_where(world, seed_type, seeds_amount, field_type, adjacent_types
 
         max_tries = 120
         tries_count = 0
-        while (adjacent_types and not is_adjacent_to(world, cell_x, cell_y, adjacent_types)) and (not_adjacent_types and is_adjacent_to(world, cell_x, cell_y, not_adjacent_types)):
+        while (adjacent_types and not is_adjacent_to(world, cell_x, cell_y, adjacent_types)) or (not_adjacent_types and is_adjacent_to(world, cell_x, cell_y, not_adjacent_types)):
             field = random.choice(fields)
             cell_x = field[0]
             cell_y = field[1]
