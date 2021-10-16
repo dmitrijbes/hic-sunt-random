@@ -78,6 +78,16 @@ def generate_river(world, river_seeds_count, river_length):
                            cell_x, cell_y)
 
 
+def generate_forests(world, forest_settings):
+    world_growth.plant_seeds_where(world, world_entities.Forest,
+                                   forest_settings.seeds_amount, world_entities.Field, adjacent_types=[world_entities.Mountain])
+
+    characters = world_growth.create_characters(5, 2)
+
+    world_growth.grow_seeds(
+        world, characters, world_entities.Forest, world_entities.Field, forest_settings.growth_rate)
+
+
 def generate_world(world_settings):
     world = world_entities.World(
         world_settings.name, world_settings.size[0], world_settings.size[1])
@@ -85,6 +95,7 @@ def generate_world(world_settings):
     generate_ocean(world)
     generate_land(world, world_settings.land_settings)
     generate_mountains(world, world_settings.mountain_settings)
+    generate_forests(world, world_settings.forest_settings)
 
     river_seeds_count = 5
     river_length = 30

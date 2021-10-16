@@ -27,6 +27,8 @@ def init_world_settings(world_settings):
     world_settings.mountain_settings.growth_rate = 5
     world_settings.land_settings.seeds_amount = 6
     world_settings.land_settings.growth_rate = 20
+    world_settings.forest_settings.seeds_amount = 10
+    world_settings.forest_settings.growth_rate = 3
 
 
 def randomize_world_settings(world_settings):
@@ -34,6 +36,8 @@ def randomize_world_settings(world_settings):
     world_settings.mountain_settings.growth_rate = random.randint(0, 20)
     world_settings.land_settings.seeds_amount = random.randint(0, 20)
     world_settings.land_settings.growth_rate = random.randint(0, 20)
+    world_settings.forest_settings.seeds_amount = random.randint(0, 10)
+    world_settings.forest_settings.growth_rate = random.randint(0, 5)
 
 
 def generate_many_worlds():

@@ -24,6 +24,10 @@ class River(WorldObject):
     name = 'river'
 
 
+class Forest(WorldObject):
+    name = 'forest'
+
+
 class World:
     def __init__(self, name, size_x, size_y):
         self.name = name
@@ -80,8 +84,14 @@ class LandSettings:
     growth_rate = 2
 
 
+class ForestSettings:
+    seeds_amount = 2
+    growth_rate = 2
+
+
 class WorldSettings:
     name = 'Great Beet World'
     size = (100, 100)
     mountain_settings = MountainSettings()
     land_settings = LandSettings()
+    forest_settings = ForestSettings()
