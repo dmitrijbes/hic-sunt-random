@@ -47,7 +47,7 @@ def is_good_river_direction(world, parent_cell, direction):
     return is_good_neighbour_count and not is_ocean
 
 
-def generate_river_vol_2(world, river_seeds_count, river_length):
+def generate_river(world, river_seeds_count, river_length):
     directions = [(1, -1), (0, 1), (1, 1), (-1, 0),
                   (1, 0), (-1, -1), (0, -1), (-1, 1)]
 
@@ -88,6 +88,6 @@ def generate_world(world_settings):
 
     river_seeds_count = 5
     river_length = 30
-    generate_river_vol_2(world, river_seeds_count, river_length)
+    generate_river(world, river_seeds_count, river_length)
 
     return world

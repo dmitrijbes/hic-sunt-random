@@ -15,9 +15,9 @@ def main():
     world = world_generator.generate_world(world_settings)
 
     print("Starting to render world..")
-    # world_renderer.render_world(world)
+    world_renderer.render_world(world)
 
-    generate_many_worlds()
+    # generate_many_worlds()
 
     print("Hic sunt random work finshed! Enjoy.")
 
