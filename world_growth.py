@@ -98,6 +98,42 @@ def is_adjacent_to(world, x, y, adjacent_types):
     return True
 
 
+def is_adjacent_only_to(world, x, y, adjacent_only_to_type):
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0),
+                  (-1, -1), (-1, 1), (1, 1), (1, -1)]
+
+    for direction_x, direction_y in directions:
+        neighbor_x = x + direction_x
+        neighbor_y = y + direction_y
+        if is_inside_world(world, neighbor_x, neighbor_y) and not isinstance(world.world_objects[neighbor_x][neighbor_y], adjacent_only_to_type):
+            return False
+
+    return True
+
+
+def plant_seeds_among(world, seed_type, seeds_amount, field_type, among_type):
+    for i in range(seeds_amount):
+        fields = world.get_world_objects(field_type)
+        field = random.choice(fields)
+        cell_x = field[0]
+        cell_y = field[1]
+
+        max_tries = 60
+        tries_count = 0
+        while not is_adjacent_only_to(world, cell_x, cell_y, among_type):
+            field = random.choice(fields)
+            cell_x = field[0]
+            cell_y = field[1]
+            tries_count += 1
+            if tries_count > max_tries:
+                break
+        if tries_count > max_tries:
+            break
+
+        world.set_cell(seed_type,
+                       cell_x, cell_y)
+
+
 def plant_seeds_where(world, seed_type, seeds_amount, field_type, adjacent_types=[], not_adjacent_types=[]):
     for i in range(seeds_amount):
         fields = world.get_world_objects(field_type)
@@ -107,7 +143,7 @@ def plant_seeds_where(world, seed_type, seeds_amount, field_type, adjacent_types
 
         max_tries = 60
         tries_count = 0
-        while not is_adjacent_to(world, cell_x, cell_y, adjacent_types):
+        while (adjacent_types and not is_adjacent_to(world, cell_x, cell_y, adjacent_types)) and (not_adjacent_types and is_adjacent_to(world, cell_x, cell_y, not_adjacent_types)):
             field = random.choice(fields)
             cell_x = field[0]
             cell_y = field[1]
