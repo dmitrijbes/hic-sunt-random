@@ -28,6 +28,10 @@ class Forest(WorldObject):
     name = 'forest'
 
 
+class City(WorldObject):
+    name = 'city'
+
+
 class World:
     def __init__(self, name, size_x, size_y):
         self.name = name
@@ -89,9 +93,15 @@ class ForestSettings:
     growth_rate = 2
 
 
+class CitySettings:
+    seeds_amount = 4
+    growth_rate = 3
+
+
 class WorldSettings:
     name = 'Great Beet World'
     size = (100, 100)
     mountain_settings = MountainSettings()
     land_settings = LandSettings()
     forest_settings = ForestSettings()
+    city_settings = CitySettings()

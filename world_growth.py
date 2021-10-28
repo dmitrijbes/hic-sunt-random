@@ -169,3 +169,19 @@ def grow_seeds(world, characters, seed_type, field_type, grow_rate):
             rand_direction_index = random.randint(0, len(grow_directions) - 1)
             grow_x, grow_y = grow_directions[rand_direction_index]
             world.set_cell(seed_type, grow_x, grow_y)
+
+
+def grow_seeds_random(world, characters, seed_type, field_type, grow_rate):
+    for i in range(grow_rate):
+        for x, y in world.get_world_objects(seed_type):
+            if throw_coin():
+                continue
+            rand_character = random.randint(0, len(characters) - 1)
+            grow_directions = get_grow_directions(
+                world, characters[rand_character].get_directions(), x, y, field_type)
+            if not grow_directions:
+                continue
+
+            rand_direction_index = random.randint(0, len(grow_directions) - 1)
+            grow_x, grow_y = grow_directions[rand_direction_index]
+            world.set_cell(seed_type, grow_x, grow_y)

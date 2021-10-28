@@ -1,6 +1,4 @@
-1. Implement city tile.
-2. Draw 3 types of tiles for cities.
-3. Draw 2 more tiles for mountain.
-4. Draw 2 more tiles for river.
-5. Create CLI for map creation.
-6. Update README.
+1. Draw 2 more tiles for mountain.
+2. Draw 2 more tiles for river.
+3. Create CLI for map creation.
+4. Update README.

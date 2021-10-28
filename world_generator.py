@@ -1,4 +1,5 @@
 import random
+import math
 
 import world_entities
 import world_growth
@@ -74,20 +75,34 @@ def generate_river(world, river_seeds_count, river_length):
             cell_x = cell_x + rand_direction[0]
             cell_y = cell_y + rand_direction[1]
 
-            world.set_cell(world_entities.River,
-                           cell_x, cell_y)
+            world.set_cell(world_entities.River, cell_x, cell_y)
 
 
 def generate_forests(world, forest_settings):
     world_growth.plant_seeds_where(world, world_entities.Forest,
-                                   (forest_settings.seeds_amount//3)*2, world_entities.Field, adjacent_types=[world_entities.Mountain])
+                                   math.floor(forest_settings.seeds_amount/3*2), world_entities.Field, adjacent_types=[world_entities.Mountain])
     world_growth.plant_seeds_among(world, world_entities.Forest,
-                                   (forest_settings.seeds_amount//3)*1, world_entities.Field, world_entities.Field)
+                                   math.floor(forest_settings.seeds_amount/3*1), world_entities.Field, world_entities.Field)
 
     characters = world_growth.create_characters(5, 4)
 
     world_growth.grow_seeds(
-        world, characters, world_entities.Forest, world_entities.Field, forest_settings.growth_rate)
+        world, characters, world_entities.Forest,
+        world_entities.Field, forest_settings.growth_rate)
+
+
+def generate_cities(world, city_settings):
+    world_growth.plant_seeds_where(world, world_entities.City,
+                                   math.floor(city_settings.seeds_amount/5*3), world_entities.Field, adjacent_types=[world_entities.River])
+    world_growth.plant_seeds_where(world, world_entities.City,
+                                   math.floor(city_settings.seeds_amount/5*1), world_entities.Field, adjacent_types=[world_entities.Forest])
+    world_growth.plant_seeds_among(world, world_entities.City,
+                                   math.floor(city_settings.seeds_amount/5*1), world_entities.Field, world_entities.Field)
+
+    characters = world_growth.create_characters(5, 6)
+
+    world_growth.grow_seeds_random(
+        world, characters, world_entities.City, world_entities.Field, city_settings.growth_rate)
 
 
 def generate_world(world_settings):
@@ -102,5 +117,6 @@ def generate_world(world_settings):
     river_seeds_count = 5
     river_length = 30
     generate_river(world, river_seeds_count, river_length)
+    generate_cities(world, world_settings.city_settings)
 
     return world
