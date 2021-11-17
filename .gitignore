@@ -1,4 +1,5 @@
-# Byte-compiled / optimized / DLL files
+# Python ignore:
 __pycache__/
+
+# Project ignore:
 output/*
-draft.txt
