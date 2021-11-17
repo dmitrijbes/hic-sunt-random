@@ -1,11 +1,21 @@
 import random
+import argparse
 
 import world_generator
 import world_renderer
 from world_entities import WorldSettings
 
 
+def parse_user_arguments():
+    parser = argparse.ArgumentParser(
+        description='User parameters for the world generation.')
+    parser.add_argument('--mountain_seeds_amount', type=int, default=6,
+                        help='Provides amount of mountain seeds (default: 6).')
+    args = parser.parse_args()
+
+
 def main():
+
     print("Welcome to hic sunt random!")
 
     world_settings = WorldSettings()
