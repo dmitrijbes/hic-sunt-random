@@ -31,6 +31,8 @@ def init_world_settings(world_settings):
     world_settings.forest_settings.growth_rate = 4
     world_settings.city_settings.seeds_amount = 8
     world_settings.city_settings.growth_rate = 3
+    world_settings.river_settings.river_seeds_count = 5
+    world_settings.river_settings.river_length = 30
 
 
 def randomize_world_settings(world_settings):

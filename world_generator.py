@@ -48,11 +48,11 @@ def is_good_river_direction(world, parent_cell, direction):
     return is_good_neighbour_count and not is_ocean
 
 
-def generate_river(world, river_seeds_count, river_length):
+def generate_river(world, river_settings):
     directions = [(1, -1), (0, 1), (1, 1), (-1, 0),
                   (1, 0), (-1, -1), (0, -1), (-1, 1)]
 
-    for i in range(river_seeds_count):
+    for i in range(river_settings.river_seeds_count):
         fields = world.get_world_objects(world_entities.Field)
         field = random.choice(fields)
         cell_x = field[0]
@@ -61,7 +61,7 @@ def generate_river(world, river_seeds_count, river_length):
         world.set_cell(world_entities.River,
                        cell_x, cell_y)
 
-        for j in range(river_length):
+        for j in range(river_settings.river_length):
             rand_direction = random.choice(directions)
             max_tries = 20
             tries_count = 0
@@ -113,10 +113,7 @@ def generate_world(world_settings):
     generate_land(world, world_settings.land_settings)
     generate_mountains(world, world_settings.mountain_settings)
     generate_forests(world, world_settings.forest_settings)
-
-    river_seeds_count = 5
-    river_length = 30
-    generate_river(world, river_seeds_count, river_length)
+    generate_river(world, world_settings.river_settings)
     generate_cities(world, world_settings.city_settings)
 
     return world

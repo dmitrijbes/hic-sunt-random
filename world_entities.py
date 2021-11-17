@@ -83,6 +83,11 @@ class MountainSettings:
     growth_rate = 2
 
 
+class RiverSettings:
+    river_seeds_count = 5
+    river_length = 30
+
+
 class LandSettings:
     seeds_amount = 2
     growth_rate = 2
