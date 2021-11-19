@@ -76,10 +76,16 @@ def randomize_world_settings(world_settings):
     world_settings.forest_settings.growth_rate = random.randint(0, 5)
     world_settings.city_settings.seeds_amount = random.randint(0, 15)
     world_settings.city_settings.growth_rate = random.randint(0, 3)
+    world_settings.river_settings.river_seeds_count = random.randint(0, 10)
+    world_settings.river_settings.river_length = random.randint(0, 50)
 
 
-def generate_many_worlds():
-    for _ in range(30):
+def generate_many_worlds(worlds_amount):
+    if worlds_amount < 0 and worlds_amount > 200:
+        print('Error: Wrong number of worlds to generate!')
+        return
+
+    for _ in range(worlds_amount):
         world_settings = WorldSettings()
         randomize_world_settings(world_settings)
 
