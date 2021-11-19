@@ -110,3 +110,4 @@ class WorldSettings:
     land_settings = LandSettings()
     forest_settings = ForestSettings()
     city_settings = CitySettings()
+    river_settings = RiverSettings()
