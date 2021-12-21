@@ -8,8 +8,8 @@ import numpy as np
 
 import world_entities
 
-TILES_PATH = './resources/tiles/'
-TILES_FORMAT = '.png'
+TILES_PATH = "./resources/tiles/"
+TILES_FORMAT = ".png"
 
 
 class TilesInfo:
@@ -19,14 +19,17 @@ class TilesInfo:
     def init_info(self):
         self.tile_img_count.clear()
 
-        tile_files = [file for file in listdir(
-            TILES_PATH) if os.path.isfile(os.path.join(TILES_PATH, file))]
+        tile_files = [
+            file
+            for file in listdir(TILES_PATH)
+            if os.path.isfile(os.path.join(TILES_PATH, file))
+        ]
 
         for tile_file in tile_files:
-            if '_' not in tile_file:
+            if "_" not in tile_file:
                 continue
 
-            tile_type = tile_file.split('_')[0]
+            tile_type = tile_file.split("_")[0]
             if tile_type not in self.tile_img_count:
                 self.tile_img_count[tile_type] = 1
             else:
@@ -36,12 +39,14 @@ class TilesInfo:
 def get_world_object_img(world_object, tiles_info):
     tile_name = type(world_object).name
     if tile_name not in tiles_info.tile_img_count:
-        tile_name = 'placeholder'
+        tile_name = "placeholder"
 
-    tile_img_index = random.randint(
-        0, tiles_info.tile_img_count[tile_name] - 1)
+    tile_img_index = random.randint(0, tiles_info.tile_img_count[tile_name] - 1)
 
-    return cv2.imread(TILES_PATH + tile_name + '_' + str(tile_img_index) + TILES_FORMAT, cv2.IMREAD_COLOR)
+    return cv2.imread(
+        TILES_PATH + tile_name + "_" + str(tile_img_index) + TILES_FORMAT,
+        cv2.IMREAD_COLOR,
+    )
 
 
 def render_world(world):
@@ -53,18 +58,20 @@ def render_world(world):
     world_picture_temp = []
     for row_index, world_objects_row in enumerate(world.world_objects):
         world_picture_row = get_world_object_img(
-            world.world_objects[row_index][0], tiles_info)
+            world.world_objects[row_index][0], tiles_info
+        )
 
         for world_object in world_objects_row[1:]:
             world_picture_row = np.concatenate(
-                (world_picture_row, get_world_object_img(world_object, tiles_info)), axis=1)
+                (world_picture_row, get_world_object_img(world_object, tiles_info)),
+                axis=1,
+            )
 
         world_picture_temp.append(copy.deepcopy(world_picture_row))
 
     world_picture = world_picture_temp[0]
     for world_picture_row in world_picture_temp[1:]:
-        world_picture = np.concatenate(
-            (world_picture, world_picture_row), axis=0)
+        world_picture = np.concatenate((world_picture, world_picture_row), axis=0)
 
     folder_path = "./output/"
     file_name = "output_"

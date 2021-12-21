@@ -2,34 +2,34 @@ import copy
 
 
 class WorldObject:
-    name = 'world_object'
+    name = "world_object"
 
     def __init__(self, coordinate_x, coordinate_y):
         self.position = (coordinate_x, coordinate_y)
 
 
 class Field(WorldObject):
-    name = 'field'
+    name = "field"
 
 
 class Ocean(WorldObject):
-    name = 'ocean'
+    name = "ocean"
 
 
 class Mountain(WorldObject):
-    name = 'mountain'
+    name = "mountain"
 
 
 class River(WorldObject):
-    name = 'river'
+    name = "river"
 
 
 class Forest(WorldObject):
-    name = 'forest'
+    name = "forest"
 
 
 class City(WorldObject):
-    name = 'city'
+    name = "city"
 
 
 class World:
@@ -61,10 +61,11 @@ class World:
         return f"World; name:{self.name} size_x:{self.size[0]} size_y:{self.size[1]}"
 
     def set_cell(self, cell_type, x, y):
-        if type(self.world_objects[x][y]) in self.world_type_objects and (x, y) in self.world_type_objects[type(
-                self.world_objects[x][y])]:
-            self.world_type_objects[type(
-                self.world_objects[x][y])].remove((x, y))
+        if (
+            type(self.world_objects[x][y]) in self.world_type_objects
+            and (x, y) in self.world_type_objects[type(self.world_objects[x][y])]
+        ):
+            self.world_type_objects[type(self.world_objects[x][y])].remove((x, y))
         if not cell_type in self.world_type_objects:
             self.world_type_objects[cell_type] = []
         self.world_type_objects[cell_type].append((x, y))
@@ -104,7 +105,7 @@ class CitySettings:
 
 
 class WorldSettings:
-    name = 'Great Beet World'
+    name = "Great Beet World"
     size = (100, 100)
     mountain_settings = MountainSettings()
     land_settings = LandSettings()

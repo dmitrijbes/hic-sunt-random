@@ -1,5 +1,5 @@
-# Python ignore:
+# Python
 __pycache__/
 
-# Project ignore:
+# Project
 output/*

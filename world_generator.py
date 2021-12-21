@@ -13,24 +13,40 @@ def generate_ocean(world):
 
 
 def generate_land(world, land_settings):
-    world_growth.plant_seeds(world, world_entities.Field,
-                             land_settings.seeds_amount, world_entities.Ocean)
+    world_growth.plant_seeds(
+        world, world_entities.Field, land_settings.seeds_amount, world_entities.Ocean
+    )
 
     characters = world_growth.create_characters(5, 2)
 
     world_growth.grow_seeds(
-        world, characters, world_entities.Field, world_entities.Ocean, land_settings.growth_rate)
+        world,
+        characters,
+        world_entities.Field,
+        world_entities.Ocean,
+        land_settings.growth_rate,
+    )
 
 
 def generate_mountains(world, mountain_settings):
     world_growth.plant_seeds(
-        world, world_entities.Mountain, mountain_settings.seeds_amount, world_entities.Field)
+        world,
+        world_entities.Mountain,
+        mountain_settings.seeds_amount,
+        world_entities.Field,
+    )
 
     characters = world_growth.create_characters(
-        5, 2, directions=[(-1, 0), (0, 1), (-1, 1), (1, -1)])
+        5, 2, directions=[(-1, 0), (0, 1), (-1, 1), (1, -1)]
+    )
 
-    world_growth.grow_seeds(world, characters, world_entities.Mountain,
-                            world_entities.Field, mountain_settings.growth_rate)
+    world_growth.grow_seeds(
+        world,
+        characters,
+        world_entities.Mountain,
+        world_entities.Field,
+        mountain_settings.growth_rate,
+    )
 
 
 def is_good_river_direction(world, parent_cell, direction):
@@ -40,17 +56,17 @@ def is_good_river_direction(world, parent_cell, direction):
     if not world_growth.is_inside_world(world, cell_x, cell_y):
         return False
 
-    is_good_neighbour_count = world_growth.get_neighbors_count(
-        world, world_entities.River, cell_x, cell_y) < 2
-    is_ocean = isinstance(
-        world.world_objects[cell_x][cell_y], world_entities.Ocean)
+    is_good_neighbour_count = (
+        world_growth.get_neighbors_count(world, world_entities.River, cell_x, cell_y)
+        < 2
+    )
+    is_ocean = isinstance(world.world_objects[cell_x][cell_y], world_entities.Ocean)
 
     return is_good_neighbour_count and not is_ocean
 
 
 def generate_river(world, river_settings):
-    directions = [(1, -1), (0, 1), (1, 1), (-1, 0),
-                  (1, 0), (-1, -1), (0, -1), (-1, 1)]
+    directions = [(1, -1), (0, 1), (1, 1), (-1, 0), (1, 0), (-1, -1), (0, -1), (-1, 1)]
 
     for i in range(river_settings.river_seeds_count):
         fields = world.get_world_objects(world_entities.Field)
@@ -58,8 +74,7 @@ def generate_river(world, river_settings):
         cell_x = field[0]
         cell_y = field[1]
 
-        world.set_cell(world_entities.River,
-                       cell_x, cell_y)
+        world.set_cell(world_entities.River, cell_x, cell_y)
 
         for j in range(river_settings.river_length):
             rand_direction = random.choice(directions)
@@ -79,35 +94,70 @@ def generate_river(world, river_settings):
 
 
 def generate_forests(world, forest_settings):
-    world_growth.plant_seeds_where(world, world_entities.Forest,
-                                   math.floor(forest_settings.seeds_amount/3*2), world_entities.Field, adjacent_types=[world_entities.Mountain])
-    world_growth.plant_seeds_among(world, world_entities.Forest,
-                                   math.floor(forest_settings.seeds_amount/3*1), world_entities.Field, world_entities.Field)
+    world_growth.plant_seeds_where(
+        world,
+        world_entities.Forest,
+        math.floor(forest_settings.seeds_amount / 3 * 2),
+        world_entities.Field,
+        adjacent_types=[world_entities.Mountain],
+    )
+    world_growth.plant_seeds_among(
+        world,
+        world_entities.Forest,
+        math.floor(forest_settings.seeds_amount / 3 * 1),
+        world_entities.Field,
+        world_entities.Field,
+    )
 
     characters = world_growth.create_characters(5, 4)
 
     world_growth.grow_seeds(
-        world, characters, world_entities.Forest,
-        world_entities.Field, forest_settings.growth_rate)
+        world,
+        characters,
+        world_entities.Forest,
+        world_entities.Field,
+        forest_settings.growth_rate,
+    )
 
 
 def generate_cities(world, city_settings):
-    world_growth.plant_seeds_where(world, world_entities.City,
-                                   math.floor(city_settings.seeds_amount/5*3), world_entities.Field, adjacent_types=[world_entities.River])
-    world_growth.plant_seeds_where(world, world_entities.City,
-                                   math.floor(city_settings.seeds_amount/5*1), world_entities.Field, adjacent_types=[world_entities.Forest])
-    world_growth.plant_seeds_among(world, world_entities.City,
-                                   math.floor(city_settings.seeds_amount/5*1), world_entities.Field, world_entities.Field)
+    world_growth.plant_seeds_where(
+        world,
+        world_entities.City,
+        math.floor(city_settings.seeds_amount / 5 * 3),
+        world_entities.Field,
+        adjacent_types=[world_entities.River],
+    )
+    world_growth.plant_seeds_where(
+        world,
+        world_entities.City,
+        math.floor(city_settings.seeds_amount / 5 * 1),
+        world_entities.Field,
+        adjacent_types=[world_entities.Forest],
+    )
+    world_growth.plant_seeds_among(
+        world,
+        world_entities.City,
+        math.floor(city_settings.seeds_amount / 5 * 1),
+        world_entities.Field,
+        world_entities.Field,
+    )
 
     characters = world_growth.create_characters(5, 6)
 
     world_growth.grow_seeds_random(
-        world, characters, world_entities.City, world_entities.Field, city_settings.growth_rate)
+        world,
+        characters,
+        world_entities.City,
+        world_entities.Field,
+        city_settings.growth_rate,
+    )
 
 
 def generate_world(world_settings):
     world = world_entities.World(
-        world_settings.name, world_settings.size[0], world_settings.size[1])
+        world_settings.name, world_settings.size[0], world_settings.size[1]
+    )
 
     generate_ocean(world)
     generate_land(world, world_settings.land_settings)

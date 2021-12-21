@@ -31,3 +31,7 @@ Run Hic Sunt Random with custom tiles:
 3. python main.py
 4. Enjoy! ^_^
 ```
+
+## License
+Apache License 2.0  
+In short, your are free to use (including commercial), copy, modify, dance, sing, distribute.
