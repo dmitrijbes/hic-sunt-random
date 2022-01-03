@@ -1,12 +1,9 @@
-import copy
-import os.path
-import random
-from os import listdir
+import os
+from copy import deepcopy
+from random import randint
 
-import cv2
+import cv2 as cv
 import numpy as np
-
-import world_entities
 
 TILES_PATH = "./resources/tiles/"
 TILES_FORMAT = ".png"
@@ -21,7 +18,7 @@ class TilesInfo:
 
         tile_files = [
             file
-            for file in listdir(TILES_PATH)
+            for file in os.listdir(TILES_PATH)
             if os.path.isfile(os.path.join(TILES_PATH, file))
         ]
 
@@ -41,11 +38,11 @@ def get_world_object_img(world_object, tiles_info):
     if tile_name not in tiles_info.tile_img_count:
         tile_name = "placeholder"
 
-    tile_img_index = random.randint(0, tiles_info.tile_img_count[tile_name] - 1)
+    tile_img_index = randint(0, tiles_info.tile_img_count[tile_name] - 1)
 
-    return cv2.imread(
+    return cv.imread(
         TILES_PATH + tile_name + "_" + str(tile_img_index) + TILES_FORMAT,
-        cv2.IMREAD_COLOR,
+        cv.IMREAD_COLOR,
     )
 
 
@@ -67,7 +64,7 @@ def render_world(world):
                 axis=1,
             )
 
-        world_picture_temp.append(copy.deepcopy(world_picture_row))
+        world_picture_temp.append(deepcopy(world_picture_row))
 
     world_picture = world_picture_temp[0]
     for world_picture_row in world_picture_temp[1:]:
@@ -83,4 +80,4 @@ def render_world(world):
         i += 1
         file_path = folder_path + file_name + str(i) + file_format
 
-    cv2.imwrite(file_path, world_picture)
+    cv.imwrite(file_path, world_picture)

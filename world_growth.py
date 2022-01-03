@@ -1,4 +1,5 @@
-import random
+# pylint: disable=invalid-name
+from random import randint, choice
 
 
 class Character:
@@ -12,14 +13,24 @@ class Character:
 def create_characters(
     characters_amount,
     character_directions_amount,
-    directions=[(0, 1), (0, -1), (1, 0), (-1, 0), (-1, -1), (1, 1), (-1, 1), (1, -1)],
+    directions=None,
 ):
+    directions = directions or [
+        (0, 1),
+        (0, -1),
+        (1, 0),
+        (-1, 0),
+        (-1, -1),
+        (1, 1),
+        (-1, 1),
+        (1, -1),
+    ]
     characters = []
 
-    for j in range(characters_amount):
+    for _ in range(characters_amount):
         character_directions = []
-        for i in range(character_directions_amount):
-            random_direction = random.randint(0, len(directions) - 1)
+        for _ in range(character_directions_amount):
+            random_direction = randint(0, len(directions) - 1)
             character_directions.append(directions[random_direction])
         characters.append(Character(character_directions))
 
@@ -53,7 +64,7 @@ def get_neighbors_count(world, world_object, x, y):
 
 
 def throw_coin():
-    if random.randint(0, 1) == 1:
+    if randint(0, 1) == 1:
         return True
     return False
 
@@ -74,16 +85,16 @@ def get_grow_directions(world, directions, seed_x, seed_y, field_type):
 def plant_seeds(world, seed_type, seeds_amount, field_type):
     planted_seeds = []
 
-    for i in range(seeds_amount):
+    for _ in range(seeds_amount):
         world_size_x, world_size_y = world.size
-        random_pos_x = random.randint(1, world_size_x - 2)
-        random_pos_y = random.randint(1, world_size_y - 2)
+        random_pos_x = randint(1, world_size_x - 2)
+        random_pos_y = randint(1, world_size_y - 2)
         while (
             not isinstance(world.world_objects[random_pos_x][random_pos_y], field_type)
             or (random_pos_x, random_pos_y) in planted_seeds
         ):
-            random_pos_x = random.randint(1, world_size_x - 2)
-            random_pos_y = random.randint(1, world_size_y - 2)
+            random_pos_x = randint(1, world_size_x - 2)
+            random_pos_y = randint(1, world_size_y - 2)
         world.set_cell(seed_type, random_pos_x, random_pos_y)
         planted_seeds.append((random_pos_x, random_pos_y))
 
@@ -124,16 +135,18 @@ def is_adjacent_only_to(world, x, y, adjacent_only_to_type):
 
 
 def plant_seeds_among(world, seed_type, seeds_amount, field_type, among_type):
-    for i in range(seeds_amount):
+    for _ in range(seeds_amount):
         fields = world.get_world_objects(field_type)
-        field = random.choice(fields)
+        if not fields:
+            return
+        field = choice(fields)
         cell_x = field[0]
         cell_y = field[1]
 
         max_tries = 120
         tries_count = 0
         while not is_adjacent_only_to(world, cell_x, cell_y, among_type):
-            field = random.choice(fields)
+            field = choice(fields)
             cell_x = field[0]
             cell_y = field[1]
             tries_count += 1
@@ -146,11 +159,21 @@ def plant_seeds_among(world, seed_type, seeds_amount, field_type, among_type):
 
 
 def plant_seeds_where(
-    world, seed_type, seeds_amount, field_type, adjacent_types=[], not_adjacent_types=[]
+    world,
+    seed_type,
+    seeds_amount,
+    field_type,
+    adjacent_types=None,
+    not_adjacent_types=None,
 ):
-    for i in range(seeds_amount):
+    adjacent_types = adjacent_types or []
+    not_adjacent_types = not_adjacent_types or []
+
+    for _ in range(seeds_amount):
         fields = world.get_world_objects(field_type)
-        field = random.choice(fields)
+        if not fields:
+            return
+        field = choice(fields)
         cell_x = field[0]
         cell_y = field[1]
 
@@ -162,7 +185,7 @@ def plant_seeds_where(
             not_adjacent_types
             and is_adjacent_to(world, cell_x, cell_y, not_adjacent_types)
         ):
-            field = random.choice(fields)
+            field = choice(fields)
             cell_x = field[0]
             cell_y = field[1]
             tries_count += 1
@@ -175,32 +198,32 @@ def plant_seeds_where(
 
 
 def grow_seeds(world, characters, seed_type, field_type, grow_rate):
-    for i in range(grow_rate):
+    for _ in range(grow_rate):
         for x, y in world.get_world_objects(seed_type):
-            rand_character = random.randint(0, len(characters) - 1)
+            rand_character = randint(0, len(characters) - 1)
             grow_directions = get_grow_directions(
                 world, characters[rand_character].get_directions(), x, y, field_type
             )
             if not grow_directions:
                 continue
 
-            rand_direction_index = random.randint(0, len(grow_directions) - 1)
+            rand_direction_index = randint(0, len(grow_directions) - 1)
             grow_x, grow_y = grow_directions[rand_direction_index]
             world.set_cell(seed_type, grow_x, grow_y)
 
 
 def grow_seeds_random(world, characters, seed_type, field_type, grow_rate):
-    for i in range(grow_rate):
+    for _ in range(grow_rate):
         for x, y in world.get_world_objects(seed_type):
             if throw_coin():
                 continue
-            rand_character = random.randint(0, len(characters) - 1)
+            rand_character = randint(0, len(characters) - 1)
             grow_directions = get_grow_directions(
                 world, characters[rand_character].get_directions(), x, y, field_type
             )
             if not grow_directions:
                 continue
 
-            rand_direction_index = random.randint(0, len(grow_directions) - 1)
+            rand_direction_index = randint(0, len(grow_directions) - 1)
             grow_x, grow_y = grow_directions[rand_direction_index]
             world.set_cell(seed_type, grow_x, grow_y)

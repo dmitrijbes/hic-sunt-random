@@ -1,5 +1,5 @@
-import random
-import math
+from random import choice
+from math import floor
 
 import world_entities
 import world_growth
@@ -68,20 +68,22 @@ def is_good_river_direction(world, parent_cell, direction):
 def generate_river(world, river_settings):
     directions = [(1, -1), (0, 1), (1, 1), (-1, 0), (1, 0), (-1, -1), (0, -1), (-1, 1)]
 
-    for i in range(river_settings.river_seeds_count):
+    for _ in range(river_settings.river_seeds_count):
         fields = world.get_world_objects(world_entities.Field)
-        field = random.choice(fields)
+        if not fields:
+            return
+        field = choice(fields)
         cell_x = field[0]
         cell_y = field[1]
 
         world.set_cell(world_entities.River, cell_x, cell_y)
 
-        for j in range(river_settings.river_length):
-            rand_direction = random.choice(directions)
+        for _ in range(river_settings.river_length):
+            rand_direction = choice(directions)
             max_tries = 20
             tries_count = 0
             while not is_good_river_direction(world, (cell_x, cell_y), rand_direction):
-                rand_direction = random.choice(directions)
+                rand_direction = choice(directions)
                 tries_count = tries_count + 1
                 if tries_count > max_tries:
                     break
@@ -97,14 +99,14 @@ def generate_forests(world, forest_settings):
     world_growth.plant_seeds_where(
         world,
         world_entities.Forest,
-        math.floor(forest_settings.seeds_amount / 3 * 2),
+        floor(forest_settings.seeds_amount / 3 * 2),
         world_entities.Field,
         adjacent_types=[world_entities.Mountain],
     )
     world_growth.plant_seeds_among(
         world,
         world_entities.Forest,
-        math.floor(forest_settings.seeds_amount / 3 * 1),
+        floor(forest_settings.seeds_amount / 3 * 1),
         world_entities.Field,
         world_entities.Field,
     )
@@ -124,21 +126,21 @@ def generate_cities(world, city_settings):
     world_growth.plant_seeds_where(
         world,
         world_entities.City,
-        math.floor(city_settings.seeds_amount / 5 * 3),
+        floor(city_settings.seeds_amount / 5 * 3),
         world_entities.Field,
         adjacent_types=[world_entities.River],
     )
     world_growth.plant_seeds_where(
         world,
         world_entities.City,
-        math.floor(city_settings.seeds_amount / 5 * 1),
+        floor(city_settings.seeds_amount / 5 * 1),
         world_entities.Field,
         adjacent_types=[world_entities.Forest],
     )
     world_growth.plant_seeds_among(
         world,
         world_entities.City,
-        math.floor(city_settings.seeds_amount / 5 * 1),
+        floor(city_settings.seeds_amount / 5 * 1),
         world_entities.Field,
         world_entities.Field,
     )

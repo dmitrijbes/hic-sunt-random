@@ -1,5 +1,5 @@
-import random
-import argparse
+from random import randint
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 import world_generator
 import world_renderer
@@ -7,99 +7,102 @@ from world_entities import WorldSettings
 
 
 def parse_user_arguments():
-    parser = argparse.ArgumentParser(
-        description="User parameters for the world generation."
-    )
-
-    parser.add_argument(
-        "--world_width",
-        type=int,
-        default=100,
-        help="Provides width of the world (default: 100).",
+    parser = ArgumentParser(
+        description="World generation parameters.",
+        formatter_class=ArgumentDefaultsHelpFormatter,
     )
 
     parser.add_argument(
         "--worlds_amount",
         type=int,
         default=1,
-        help="Provides amount of the worlds generated (default: 1).",
+        help="Amount of the worlds to generate.",
+    )
+    parser.add_argument(
+        "--randomize_parameters", dest="randomize_parameters", action="store_true"
     )
 
+    parser.add_argument(
+        "--world_width",
+        type=int,
+        default=100,
+        help="Width of the world.",
+    )
     parser.add_argument(
         "--world_height",
         type=int,
         default=100,
-        help="Provides height of the world (default: 100).",
+        help="Height of the world.",
     )
 
     parser.add_argument(
         "--mountain_seeds_amount",
         type=int,
         default=6,
-        help="Provides amount of mountain seeds (default: 6).",
+        help="Mountain seeds.",
     )
     parser.add_argument(
         "--mountain_growth_rate",
         type=int,
         default=5,
-        help="Provides growth rate of mountains (default: 5).",
+        help="Mountain growth rate.",
     )
     parser.add_argument(
         "--land_seeds_amount",
         type=int,
         default=6,
-        help="Provides amount of land seeds (default: 6).",
+        help="Land seeds.",
     )
     parser.add_argument(
         "--land_growth_rate",
         type=int,
         default=20,
-        help="Provides growth rate of land (default: 20).",
+        help="Land growth rate.",
     )
     parser.add_argument(
         "--forest_seeds_amount",
         type=int,
         default=10,
-        help="Provides amount of forest seeds (default: 10).",
+        help="Forest seeds.",
     )
     parser.add_argument(
         "--forest_growth_rate",
         type=int,
         default=4,
-        help="Provides growth rate of forest (default: 4).",
+        help="Forest growth rate.",
     )
     parser.add_argument(
         "--city_seeds_amount",
         type=int,
         default=8,
-        help="Provides amount of city seeds (default: 8).",
+        help="City seeds.",
     )
     parser.add_argument(
         "--city_growth_rate",
         type=int,
         default=3,
-        help="Provides growth rate of cities (default: 3).",
+        help="City growth rate.",
     )
     parser.add_argument(
         "--river_seeds_amount",
         type=int,
         default=5,
-        help="Provides amount of river seeds (default: 5).",
+        help="River seeds.",
     )
     parser.add_argument(
         "--river_length",
         type=int,
         default=30,
-        help="Provides river length (default: 30).",
+        help="River length.",
     )
 
+    parser.set_defaults(randomize_parameters=False)
     args = parser.parse_args()
-
     return args
 
 
 def parameters_to_world_settings(world_settings, args):
-    world_settings.size = (args.world_width, args.world_height)
+    world_settings.size = (args.world_height, args.world_width)
     world_settings.mountain_settings.seeds_amount = args.mountain_seeds_amount
     world_settings.mountain_settings.growth_rate = args.mountain_growth_rate
     world_settings.land_settings.seeds_amount = args.land_seeds_amount
@@ -113,48 +116,47 @@ def parameters_to_world_settings(world_settings, args):
 
 
 def main():
-    world_settings = WorldSettings()
-    args = parse_user_arguments()
-    parameters_to_world_settings(world_settings, args)
-
     print("Welcome to hic sunt random!")
 
-    print("Starting to generate world..")
-    world = world_generator.generate_world(world_settings)
-
-    print("Starting to render world..")
-    world_renderer.render_world(world)
-
-    worlds_amount = args.worlds_amount
-    generate_worlds(worlds_amount)
+    args = parse_user_arguments()
+    generate_worlds(args)
 
     print("Hic sunt random work finshed! Enjoy.")
 
 
 def randomize_world_settings(world_settings):
-    world_settings.mountain_settings.seeds_amount = random.randint(0, 20)
-    world_settings.mountain_settings.growth_rate = random.randint(0, 20)
-    world_settings.land_settings.seeds_amount = random.randint(0, 20)
-    world_settings.land_settings.growth_rate = random.randint(0, 20)
-    world_settings.forest_settings.seeds_amount = random.randint(0, 10)
-    world_settings.forest_settings.growth_rate = random.randint(0, 5)
-    world_settings.city_settings.seeds_amount = random.randint(0, 15)
-    world_settings.city_settings.growth_rate = random.randint(0, 3)
-    world_settings.river_settings.river_seeds_count = random.randint(0, 10)
-    world_settings.river_settings.river_length = random.randint(0, 50)
+    world_height = randint(10, 100)
+    world_width = randint(10, 100)
+    world_settings.size = (world_height, world_width)
+    world_settings.mountain_settings.seeds_amount = randint(0, 20)
+    world_settings.mountain_settings.growth_rate = randint(0, 20)
+    world_settings.land_settings.seeds_amount = randint(0, 20)
+    world_settings.land_settings.growth_rate = randint(0, 20)
+    world_settings.forest_settings.seeds_amount = randint(0, 10)
+    world_settings.forest_settings.growth_rate = randint(0, 5)
+    world_settings.city_settings.seeds_amount = randint(0, 15)
+    world_settings.city_settings.growth_rate = randint(0, 3)
+    world_settings.river_settings.river_seeds_count = randint(0, 10)
+    world_settings.river_settings.river_length = randint(0, 50)
 
 
-def generate_worlds(worlds_amount):
-    if worlds_amount < 0 and worlds_amount > 200:
+def generate_worlds(args):
+    if args.worlds_amount < 0 and args.worlds_amount > 200:
         print("Error: Wrong number of worlds to generate!")
         return
 
-    for _ in range(worlds_amount):
+    for _ in range(args.worlds_amount):
         world_settings = WorldSettings()
-        randomize_world_settings(world_settings)
 
+        if args.randomize_parameters:
+            randomize_world_settings(world_settings)
+        else:
+            parameters_to_world_settings(world_settings, args)
+
+        print("Starting to generate world..")
         world = world_generator.generate_world(world_settings)
 
+        print("Starting to render world..")
         world_renderer.render_world(world)
 
 
